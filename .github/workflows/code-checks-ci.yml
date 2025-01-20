@@ -1,0 +1,14 @@
+name: SonarQube Code Checks
+on:
+  workflow_dispatch:
+  push:
+    branches: develop
+  # pull_request:
+  #   types: [opened, synchronize, reopened]
+
+jobs:
+  code-checks:
+    uses: ./.github/workflows/code-checks-sonarqube.yml
+    with:
+      branch-name: develop
+    secrets: inherit
