@@ -12,6 +12,10 @@ on:
         required: true
       sonar_host_url:
         required: true
+env:
+  NODE_DEFAULT_VERSION: 20
+  ANGULAR_CLI_VERSION: 17
+  CYCLONEDX_NPM_VERSION: "^1.12.0"
 
 jobs:
   scan-code:
@@ -28,8 +32,13 @@ jobs:
         with:
           ref: ${{ inputs.branch-name }}
 
-      - name: NPM install
-        run: npm install
+      - name: "Install CLI tools"
+        run: npm install -g @angular/cli@$ANGULAR_CLI_VERSION
+      - name: "Install application minimalistically"
+        run: |
+          npm install --ignore-scripts
+          cd frontend
+          npm install --ignore-scripts --legacy-peer-deps
 
       - name: Run linting
         run: npm run lint
